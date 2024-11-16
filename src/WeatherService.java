@@ -32,24 +32,30 @@ public class WeatherService {
     }
     public static String parseGeolocatie(String raspuns) throws Exception {
 
-        JSONParser parser = new JSONParser();
+        try {
+            JSONParser parser = new JSONParser();
 
-        // Parsează răspunsul ca un JSONArray (array de obiecte JSON)
-        JSONArray jsonArray = (JSONArray) parser.parse(raspuns);
+            // Parsează răspunsul ca un JSONArray (array de obiecte JSON)
+            JSONArray jsonArray = (JSONArray) parser.parse(raspuns);
 
-        // Accesăm primul obiect din array (dacă există)
-        JSONObject jsonObiect = (JSONObject) jsonArray.get(0);
+            // Accesăm primul obiect din array (dacă există)
+            JSONObject jsonObiect = (JSONObject) jsonArray.get(0);
 
-        // Extragem câmpurile dorite
-        String name = (String) jsonObiect.get("name");
+            // Extragem câmpurile dorite
+            String name = (String) jsonObiect.get("name");
 
-        // Latitudine și longitudine sunt de tip double, deci trebuie să le accesăm ca atare
-        double lat = (double) jsonObiect.get("lat");
-        double lon = (double) jsonObiect.get("lon");
+            // Latitudine și longitudine sunt de tip double, deci trebuie să le accesăm ca atare
+            double lat = (double) jsonObiect.get("lat");
+            double lon = (double) jsonObiect.get("lon");
 
-        // Returnează un String formatat
-        return getVreme(lat,lon);
+            // Returnează un String formatat
+            return getVreme(lat, lon);
+        } catch (Exception e) {
+
+            return "Eroare, nu ai scris un oras!";
+        }
     }
+
     public static String getVreme(double lat, double lon) throws Exception {
 
         String cereVremea =urlVreme + "?lat=" + lat + "&lon=" + lon + "&appid=" + cheieAPI;
@@ -73,18 +79,22 @@ public class WeatherService {
 
         // Parsează răspunsul ca un JSONArray (array de obiecte JSON)
         JSONObject jsonObiect = (JSONObject) parser.parse(raspuns);
+
         JSONObject mainData = (JSONObject) jsonObiect.get("main");
 
         JSONArray sideData = (JSONArray) jsonObiect.get("weather");
         JSONObject weatherObject = (JSONObject) sideData.get(0);
 
+        JSONObject country = (JSONObject) jsonObiect.get("sys");
+
         double temp = (double) mainData.get("temp");
         String desc = (String) weatherObject.get("description");
+        String tara= (String) country.get("country");
         temp = temp-273.15;
         temp=Math.round(temp);
 
 
-        String tempAsString = "Temperature: "+Double.toString(temp) + " Grade " + "\n" + "Description: "+desc;
+        String tempAsString = "Tara: "+tara+"\n"+"Temperature: "+Double.toString(temp) + " Grade " + "\n" + "Description: "+desc;
 
 
 
