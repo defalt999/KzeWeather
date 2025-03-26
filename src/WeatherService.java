@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class WeatherService {
-    private static final String cheieAPI = "179bdb044a9275b22776e0150670a1d9";
+    private static final String cheieAPI = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
     private static final String urlVreme = "https://api.openweathermap.org/data/2.5/weather";
 
     private static final String urlGeolocatia = "http://api.openweathermap.org/geo/1.0/direct";
